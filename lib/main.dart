@@ -26,111 +26,159 @@ class _MyAppState extends State<MyApp> {
       //   '/screenTwo': (context) => ScreenTwo(),
       //   '/screenThree': (context) => ScreenThree(),
       //  },
-      home: AlertsTutorialScreen(),
+      home: LifeCycleAndListScreen(),
     );
   }
 }
 
-class AlertsTutorialScreen extends StatelessWidget {
-  const AlertsTutorialScreen({super.key});
+class LifeCycleAndListScreen extends StatefulWidget {
+  const LifeCycleAndListScreen({super.key});
+
+  @override
+  State<LifeCycleAndListScreen> createState() => _LifeCycleAndListScreenState();
+}
+
+class _LifeCycleAndListScreenState extends State<LifeCycleAndListScreen> {
+
+  List<String> myItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    log('initState called');
+    myItems = List.generate(50, (index) => 'Number ${index + 1}',);
+  }
+  
+  @override
+  void dispose() {
+    log('Dispose called');
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Alerts & Messages'),
-        backgroundColor: Colors.purpleAccent,
+        title: Text('Life Cycle & ListView'),
+        backgroundColor: Colors.greenAccent,
       ),
-
-      body: Center(
-        child: Column(
-          mainAxisAlignment: .center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('تم إضافة المنتج الى السلة '),
-                    backgroundColor: Colors.teal,
-                    duration: Duration(seconds: 2),
-                    action: SnackBarAction(label: 'تراجع', onPressed: () {}),
-                  ),
-                );
-              },
-              child: Text('Show SnackBar'),
+      body: ListView.builder(
+        itemCount: myItems.length,
+        itemBuilder: (context, index) {
+          return Card(
+            margin: .symmetric(vertical: 5, horizontal: 10),
+            child: ListTile(
+              leading: CircleAvatar(child: Text('${index + 1}')),
+              title: Text(myItems[index]),
+              trailing: Icon(Icons.arrow_forward),
             ),
-
-            SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text('Important Message'),
-                      content: Text(
-                        'Are you sure you want to delete this item?',
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('Cancel'),
-                        ),
-
-                        TextButton(onPressed: () {}, child: Text('Delete')),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Text('Dialog Alert'),
-            ),
-
-            SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return Container(
-                      height: 200,
-                      padding: .all(20),
-                      child: Column(
-                        children: [
-                          Text(
-                            'مشاركة عبر :',
-                            style: TextStyle(fontSize: 20, fontWeight: .bold),
-                          ),
-                          SizedBox(height: 10,),
-                          ListTile(
-                            title: Text('Facebook'),
-                            leading: Icon(Icons.facebook, color: Colors.blue),
-                            onTap: () {},
-                          ),
-
-                          ListTile(
-                            title: Text('Telegram'),
-                            leading: Icon(Icons.telegram, color: Colors.blue),
-                            onTap: () {},
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              },
-              child: Text('Bottom Sheet'),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 }
+
+// class AlertsTutorialScreen extends StatelessWidget {
+//   const AlertsTutorialScreen({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Alerts & Messages'),
+//         backgroundColor: Colors.purpleAccent,
+//       ),
+//
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: .center,
+//           children: [
+//             ElevatedButton(
+//               onPressed: () {
+//                 ScaffoldMessenger.of(context).showSnackBar(
+//                   SnackBar(
+//                     content: Text('تم إضافة المنتج الى السلة '),
+//                     backgroundColor: Colors.teal,
+//                     duration: Duration(seconds: 2),
+//                     action: SnackBarAction(label: 'تراجع', onPressed: () {}),
+//                   ),
+//                 );
+//               },
+//               child: Text('Show SnackBar'),
+//             ),
+//
+//             SizedBox(height: 20),
+//
+//             ElevatedButton(
+//               onPressed: () {
+//                 showDialog(
+//                   context: context,
+//                   builder: (context) {
+//                     return AlertDialog(
+//                       title: Text('Important Message'),
+//                       content: Text(
+//                         'Are you sure you want to delete this item?',
+//                       ),
+//                       actions: [
+//                         TextButton(
+//                           onPressed: () {
+//                             Navigator.pop(context);
+//                           },
+//                           child: Text('Cancel'),
+//                         ),
+//
+//                         TextButton(onPressed: () {}, child: Text('Delete')),
+//                       ],
+//                     );
+//                   },
+//                 );
+//               },
+//               child: Text('Dialog Alert'),
+//             ),
+//
+//             SizedBox(height: 20),
+//
+//             ElevatedButton(
+//               onPressed: () {
+//                 showModalBottomSheet(
+//                   context: context,
+//                   builder: (context) {
+//                     return Container(
+//                       height: 200,
+//                       padding: .all(20),
+//                       child: Column(
+//                         children: [
+//                           Text(
+//                             'مشاركة عبر :',
+//                             style: TextStyle(fontSize: 20, fontWeight: .bold),
+//                           ),
+//                           SizedBox(height: 10,),
+//                           ListTile(
+//                             title: Text('Facebook'),
+//                             leading: Icon(Icons.facebook, color: Colors.blue),
+//                             onTap: () {},
+//                           ),
+//
+//                           ListTile(
+//                             title: Text('Telegram'),
+//                             leading: Icon(Icons.telegram, color: Colors.blue),
+//                             onTap: () {},
+//                           ),
+//                         ],
+//                       ),
+//                     );
+//                   },
+//                 );
+//               },
+//               child: Text('Bottom Sheet'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 // class ScreenOne extends StatelessWidget {
 //   const ScreenOne({super.key});
